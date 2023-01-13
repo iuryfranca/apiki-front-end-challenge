@@ -1,6 +1,13 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppLayout } from '@/components/modules';
+import { AppProps } from 'next/app';
+import { globalStyles } from 'stitches.config';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App = ({ Component, pageProps }: AppProps) => {
+  globalStyles();
+  return (
+    <AppLayout>
+      <Component {...pageProps} />;
+    </AppLayout>
+  );
+};
+export default App;
