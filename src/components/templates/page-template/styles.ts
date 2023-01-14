@@ -5,6 +5,10 @@ export const TemplateWrapper = styled('div', {
   margin: '0 auto',
   height: '100%',
 
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px',
+
   '@media screen and (max-width: 768px)': {
     padding: '20px',
   },

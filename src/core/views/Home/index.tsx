@@ -1,3 +1,4 @@
+import { CardPost } from '@/components/elements/card-post';
 import { PageTemplate } from '@/components/templates';
 import { useHomeContext } from '@/core/contexts';
 import { useEffect } from 'react';
@@ -9,11 +10,10 @@ export const HomeView = () => {
     getPostsList();
   }, []);
 
-  console.log(postList, 'postList');
-
   return (
     <PageTemplate title="Home">
-      <p>Teste</p>
+      {postList &&
+        postList.map(item => <CardPost key={item?.slug} {...item} />)}
     </PageTemplate>
   );
 };

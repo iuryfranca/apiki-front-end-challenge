@@ -1,31 +1,51 @@
 import { createContext, useContext, useState } from 'react';
 
+interface Props {
+  children: React.ReactNode;
+}
+
 type HomeContextData = {
-  postList: string[];
+  postList: CardPostProps[];
   getPostsList: () => void;
 };
 
 export type ImagePost = {
   src: string;
   alt: string;
-  size: number[];
 };
 
 export type CardPostProps = {
-  image: ImagePost;
   title: string;
+  image: ImagePost;
   slug: string;
+  description: string;
+  creator: string;
+  date: string;
 };
 
 export const HomeContext = createContext({} as HomeContextData);
 
-export function HomeProvider({ children }) {
-  const [postList, setPostList] = useState([]);
+export const HomeProvider: React.FC<Props> = ({ children }) => {
+  const [postList, setPostList] = useState<CardPostProps[]>([]);
 
   function getPostsList() {
     fetch('https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518')
       .then(response => response.json())
-      .then(data => setPostList(data));
+      .then(data => {
+        const formattedPostList: CardPostProps[] = data?.map(item => ({
+          title: item?.title?.rendered,
+          image: {
+            src: item?._embedded?.['wp:featuredmedia'][0]?.source_url,
+            alt: item?.slug,
+          },
+          slug: item?.slug,
+          description: item?.excerpt?.rendered,
+          creator: item?._embedded?.author[0]?.name,
+          date: item?.date,
+        }));
+
+        setPostList(formattedPostList);
+      });
   }
 
   return (
@@ -38,7 +58,7 @@ export function HomeProvider({ children }) {
       {children}
     </HomeContext.Provider>
   );
-}
+};
 
 export const useHomeContext = () => {
   const context = useContext(HomeContext);

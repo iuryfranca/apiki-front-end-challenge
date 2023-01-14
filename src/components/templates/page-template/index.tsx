@@ -1,14 +1,14 @@
 import { TemplateWrapper } from './styles';
 
-interface PageTempalteProps {
+interface PageTemplateProps {
   title: string;
   children: React.ReactNode;
 }
 
-export const PageTemplate = ({ children, title }: PageTempalteProps) => {
+export const PageTemplate = ({ children, title }: PageTemplateProps) => {
   return (
     <>
-      <title data-testid="page-title">{title}</title>
+      <title>{title}</title>
       <TemplateWrapper>{children}</TemplateWrapper>
     </>
   );
