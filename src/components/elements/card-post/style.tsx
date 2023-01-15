@@ -1,4 +1,11 @@
+import { keyframes } from '@stitches/react';
 import { styled } from 'stitches.config';
+
+const upMove = keyframes({
+  '0%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-5px)' },
+  '100%': { transform: 'translateY(-2px)' },
+});
 
 export const Wrapper = styled('div', {
   display: 'flex',
@@ -9,8 +16,13 @@ export const Wrapper = styled('div', {
   gap: '15px',
   padding: '15px 20px',
   backgroundColor: '#ebebeb',
-  borderRadius: '15px',
+  borderRadius: '10px',
   wordBreak: 'break-word',
+  '&:hover': {
+    cursor: 'pointer',
+    animation: `${upMove} 1s infinite alternate`,
+    animationTimingFunction: 'ease',
+  },
 });
 
 export const ImageWrapper = styled('img', {
@@ -28,18 +40,11 @@ export const TextWrapper = styled('div', {
   justifyContent: 'space-between',
   width: '100%',
   height: '150px',
-  gap: '15px',
   padding: '5px',
-});
-
-export const DescriptionWrapper = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  // background: 'linear-gradient(#ffffff00 50%, rgb(235, 235, 235))',
 });
 
 export const CreatorAndDataWrapper = styled('div', {
   display: 'flex',
   justifyContent: 'flex-end',
-  fontSize: '13px',
+  fontSize: '11px',
 });

@@ -1,9 +1,9 @@
 import { CardPostProps } from '@/core/contexts';
+import { format } from 'date-fns';
 import {
   ImageWrapper,
   TextWrapper,
   CreatorAndDataWrapper,
-  DescriptionWrapper,
   Wrapper,
 } from './style';
 
@@ -15,7 +15,7 @@ export const CardPost = ({
   creator,
   date,
 }: CardPostProps) => {
-  console.log(image);
+  const dateFormated = format(new Date(date), 'yyyy/MM/dd');
   return (
     <Wrapper>
       <ImageWrapper src={image?.src} alt={image?.alt} />
@@ -23,11 +23,14 @@ export const CardPost = ({
       <TextWrapper>
         <h2>{title}</h2>
 
-        <DescriptionWrapper>{description}</DescriptionWrapper>
+        <div
+          style={{ fontSize: '13px' }}
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
 
         <CreatorAndDataWrapper>
-          <p>{creator} -</p>
-          <p>- {date}</p>
+          <p>{creator || 'Autor não encontrado'} - </p>
+          <p> {dateFormated} </p>
         </CreatorAndDataWrapper>
       </TextWrapper>
     </Wrapper>
