@@ -46,6 +46,7 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
           return response.json();
         })
         .then(data => {
+          const lastPostList = postList;
           const formattedPostList: CardPostProps[] = data?.map(item => ({
             title: item?.title?.rendered,
             image: {
@@ -58,7 +59,9 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
             date: item?.date,
           }));
 
-          setPostList(formattedPostList);
+          const finalPostList = lastPostList.concat(formattedPostList);
+
+          setPostList(finalPostList);
         })
         .finally(() => {
           setLoadingData(false);

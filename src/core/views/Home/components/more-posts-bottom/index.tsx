@@ -6,12 +6,7 @@ export const MorePostsButton = () => {
 
   return (
     <Wrapper>
-      <Button
-        loading={loadingData}
-        onClick={() => {
-          incrementPageNumber();
-        }}
-      >
+      <Button loading={loadingData} onClick={incrementPageNumber}>
         More Posts
       </Button>
     </Wrapper>
