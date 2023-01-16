@@ -17,7 +17,7 @@ export const CardPost = ({
   creator,
   date,
 }: CardPostProps) => {
-  const { setSlugUrl } = usePostContext();
+  const { setResetPostContent } = usePostContext();
 
   const formatterDate = new Intl.DateTimeFormat('pt-BR', {
     year: 'numeric',
@@ -27,8 +27,12 @@ export const CardPost = ({
 
   const router = useRouter();
 
+  const handleRouteChange = () => {
+    setResetPostContent();
+  };
+
   function getPostPage() {
-    setSlugUrl(slug);
+    router.events.on('routeChangeStart', handleRouteChange);
     router.push(`/posts/${slug}`);
   }
 
