@@ -1,13 +1,17 @@
 import { useHomeContext } from '@/core/contexts';
 import { Wrapper, Button } from './style';
 
-export const MorePostsButton = () => {
+type textButton = {
+  textLoading: string;
+};
+
+export const MorePostsButton = ({ textLoading }: textButton) => {
   const { loadingData, incrementPageNumber } = useHomeContext();
 
   return (
     <Wrapper>
       <Button loading={loadingData} onClick={incrementPageNumber}>
-        {loadingData ? 'Loading Posts' : 'More Posts'}
+        {loadingData ? textLoading : 'More Posts'}
       </Button>
     </Wrapper>
   );

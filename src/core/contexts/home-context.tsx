@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { equal } from 'assert';
+import { createContext, Dispatch, useContext, useState } from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ type HomeContextData = {
   postList: CardPostProps[];
   numberPage: number;
   loadingData: boolean;
+  setLoadingData: Dispatch<boolean>;
   getPostsList: () => void;
   incrementPageNumber: () => void;
 };
@@ -59,7 +61,12 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
             date: item?.date,
           }));
 
-          const finalPostList = lastPostList.concat(formattedPostList);
+          const checkingIdentical =
+            JSON.stringify(formattedPostList) === JSON.stringify(lastPostList);
+
+          const finalPostList = checkingIdentical
+            ? lastPostList
+            : lastPostList.concat(formattedPostList);
 
           setPostList(finalPostList);
         })
@@ -81,6 +88,7 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
         loadingData,
         getPostsList,
         incrementPageNumber,
+        setLoadingData,
       }}
     >
       {children}

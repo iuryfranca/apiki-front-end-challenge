@@ -1,11 +1,14 @@
 import { CardPost } from '@/components/elements/card-post';
 import { PageTemplate } from '@/components/templates';
 import { useHomeContext } from '@/core/contexts';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { MorePostsButton } from './components/more-posts-bottom';
 
 export const HomeView = () => {
   const { postList, numberPage, getPostsList } = useHomeContext();
+
+  // const test = useMemo(() => getPostsList(), [numberPage]);
+  // console.log(test);
 
   useEffect(() => {
     getPostsList();
@@ -14,9 +17,9 @@ export const HomeView = () => {
   return (
     <PageTemplate title="Home">
       {postList &&
-        postList.map(item => <CardPost key={item?.slug} {...item} />)}
+        postList.map((item, idx) => <CardPost key={idx} {...item} />)}
 
-      <MorePostsButton />
+      <MorePostsButton textLoading="Loading Posts" />
     </PageTemplate>
   );
 };
