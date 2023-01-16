@@ -7,7 +7,7 @@ export const MorePostsButton = () => {
   return (
     <Wrapper>
       <Button loading={loadingData} onClick={incrementPageNumber}>
-        More Posts
+        {loadingData ? 'Loading Posts' : 'More Posts'}
       </Button>
     </Wrapper>
   );
