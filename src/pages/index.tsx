@@ -1,11 +1,7 @@
-import { HomeProvider } from '@/core/contexts';
+import { HomeProvider, PostProvider } from '@/core/contexts';
 import { HomeView } from '@/core/views/Home';
 import { NextPage } from 'next';
 
-const Home: NextPage = () => (
-  <HomeProvider>
-    <HomeView />
-  </HomeProvider>
-);
+const Home: NextPage = () => <HomeView />;
 
 export default Home;

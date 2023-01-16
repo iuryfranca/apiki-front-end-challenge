@@ -66,7 +66,7 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
         .finally(() => {
           setLoadingData(false);
         });
-    }, 2000);
+    }, 500);
   }
 
   function incrementPageNumber() {
