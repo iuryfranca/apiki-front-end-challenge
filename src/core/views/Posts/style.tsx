@@ -55,7 +55,8 @@ export const WrapperContent = styled('div', {
     margin: '5px 0 5px 40px',
   },
 
-  margin: 'auto 120px',
+  margin: 'auto 300px',
+
   width: 'auto',
   maxWidth: '100%',
 
