@@ -1,5 +1,10 @@
-import { equal } from 'assert';
-import { createContext, Dispatch, useContext, useState } from 'react';
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -40,45 +45,40 @@ export const HomeProvider: React.FC<Props> = ({ children }) => {
 
     setLoadingData(true);
 
-    setTimeout(() => {
-      fetch(
-        `https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518${pageRequest}`,
-      )
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          const lastPostList = postList;
-          const formattedPostList: CardPostProps[] = data?.map(item => ({
-            title: item?.title?.rendered,
-            image: {
-              src: item?._embedded?.['wp:featuredmedia'][0]?.source_url,
-              alt: item?.slug,
-            },
-            slug: item?.slug,
-            description: item?.excerpt?.rendered,
-            creator: item?._embedded?.author[0]?.name,
-            date: item?.date,
-          }));
+    fetch(
+      `https://blog.apiki.com/wp-json/wp/v2/posts?_embed&categories=518${pageRequest}`,
+    )
+      .then(response => response.json())
+      .then(data => {
+        const lastPostList = postList;
+        const formattedPostList: CardPostProps[] = data?.map(item => ({
+          title: item?.title?.rendered,
+          image: {
+            src: item?._embedded?.['wp:featuredmedia'][0]?.source_url,
+            alt: item?.slug,
+          },
+          slug: item?.slug,
+          description: item?.excerpt?.rendered,
+          creator: item?._embedded?.author[0]?.name,
+          date: item?.date,
+        }));
 
-          const checkingIdentical =
-            JSON.stringify(formattedPostList) === JSON.stringify(lastPostList);
+        const finalPostList = lastPostList.concat(formattedPostList);
 
-          const finalPostList = checkingIdentical
-            ? lastPostList
-            : lastPostList.concat(formattedPostList);
-
-          setPostList(finalPostList);
-        })
-        .finally(() => {
-          setLoadingData(false);
-        });
-    }, 500);
+        setPostList(finalPostList);
+      })
+      .finally(() => {
+        setLoadingData(false);
+      });
   }
 
   function incrementPageNumber() {
     setNumberPage(numberPage + 1);
   }
+
+  useEffect(() => {
+    getPostsList();
+  }, [numberPage]);
 
   return (
     <HomeContext.Provider

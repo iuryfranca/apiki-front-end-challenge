@@ -1,18 +1,17 @@
 import { CardPost } from '@/components/elements/card-post';
 import { PageTemplate } from '@/components/templates';
 import { useHomeContext } from '@/core/contexts';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { MorePostsButton } from './components/more-posts-bottom';
 
 export const HomeView = () => {
   const { postList, numberPage, getPostsList } = useHomeContext();
 
-  // const test = useMemo(() => getPostsList(), [numberPage]);
-  // console.log(test);
-
   useEffect(() => {
-    getPostsList();
-  }, [numberPage]);
+    if (postList.length < 1) {
+      getPostsList();
+    }
+  }, []);
 
   return (
     <PageTemplate title="Home">

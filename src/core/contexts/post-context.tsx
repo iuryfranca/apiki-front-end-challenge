@@ -12,10 +12,8 @@ type PostContentProps = {
 };
 
 type PostContextData = {
-  slugUrl: string;
   postContent: PostContentProps;
-  setSlugUrl: Dispatch<any>;
-  getPostsContent: () => void;
+  getPostsContent: (slug: string) => void;
   setResetPostContent: () => void;
 };
 
@@ -23,35 +21,34 @@ export const PostContext = createContext({} as PostContextData);
 
 export const PostProvider: React.FC<Props> = ({ children }) => {
   const [postContent, setPostContent] = useState<PostContentProps>();
-  const [slugUrl, setSlugUrl] = useState<string>('');
 
   const { setLoadingData } = useHomeContext();
 
-  function getPostsContent() {
+  function getPostsContent(slug: string) {
     setLoadingData(true);
 
-    setTimeout(() => {
-      fetch(`https://blog.apiki.com/wp-json/wp/v2/posts?_embed&slug=${slugUrl}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          const formattedPostContent: PostContentProps = {
-            title: data[0]?.title?.rendered,
-            image: {
-              src: data[0]?._embedded?.['wp:featuredmedia'][0]?.media_details
-                ?.sizes?.['jnews-1140x570']?.source_url,
-              alt: data[0]?.slug,
-            },
-            content: data[0]?.content?.rendered,
-          };
+    fetch(`https://blog.apiki.com/wp-json/wp/v2/posts?_embed&slug=${slug}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const formattedPostContent: PostContentProps = {
+          title: data[0]?.title?.rendered,
+          image: {
+            src: data[0]?._embedded?.['wp:featuredmedia'][0]?.media_details
+              ?.sizes?.['jnews-1140x570']?.source_url,
+            alt: data[0]?.slug,
+          },
+          content: data[0]?.content?.rendered,
+        };
 
-          setPostContent(formattedPostContent);
-        })
-        .finally(() => {
+        setPostContent(formattedPostContent);
+      })
+      .finally(() => {
+        setTimeout(() => {
           setLoadingData(false);
-        });
-    }, 800);
+        }, 1000);
+      });
   }
 
   function setResetPostContent() {
@@ -61,9 +58,7 @@ export const PostProvider: React.FC<Props> = ({ children }) => {
   return (
     <PostContext.Provider
       value={{
-        slugUrl,
         postContent,
-        setSlugUrl,
         getPostsContent,
         setResetPostContent,
       }}
