@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { MorePostsButton } from '../Home/components/more-posts-bottom';
+import { Wrapper, WrapperContent, WrapperImage, WrapperTitle } from './style';
 
 export const PostView = () => {
   const { postContent, getPostsContent } = usePostContext();
@@ -12,54 +13,34 @@ export const PostView = () => {
 
   const { slug } = router.query;
 
+  const imageLoader = () => {
+    return `${postContent?.image?.src}?w=${570}&q=${75}`;
+  };
+
   useEffect(() => getPostsContent(slug as string), [slug]);
   return (
     <>
       <title>{(!loadingData && postContent?.title) || 'Blog'}</title>
       {!!loadingData && <MorePostsButton textLoading="Loading Blog" />}
       {!loadingData && !!postContent && (
-        <>
-          {/* <div
-            style={{
-              backgroundImage: `url(${postContent?.image?.src})`,
-              height: '570px',
-              width: '100%',
-              margin: '0px 0px',
-            }}
-          /> */}
-          <div
-            style={{
-              width: '100%',
-              height: 570,
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
+        <Wrapper>
+          <WrapperImage>
             <Image
               src={postContent?.image?.src}
+              alt={postContent?.image?.alt}
               style={{ objectFit: 'cover' }}
+              loader={imageLoader}
               fill
-              alt="dadada"
             />
-          </div>
-          <div
-            style={{
-              margin: '0px auto',
-
-              display: 'flex',
-              justifyContent: 'center',
-
-              width: '100%',
-              height: '100%',
-              padding: '5px',
-              marginTop: '30px',
-            }}
-          >
+          </WrapperImage>
+          <WrapperTitle>
             <h1>{postContent?.title}</h1>
-          </div>
-        </>
+          </WrapperTitle>
+          <WrapperContent
+            dangerouslySetInnerHTML={{ __html: postContent.content }}
+          />
+        </Wrapper>
       )}
     </>
-    // </PageTemplate>
   );
 };
